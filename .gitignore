@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Mac OS junk files
+.DS_Store
+
+# Logs
+npm-debug.log
+
+# Environment variables (Safety)
+.env
