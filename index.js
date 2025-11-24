@@ -12,10 +12,11 @@ async function getData() {
   grid.innerHTML = "";
   tableWrapper.style.display = "none";
   tbody.innerHTML = "";
-
+  const TARGET_URL = "https://nesco-custom-server-cmh9.onrender.com/"; // Replace with actual URL
+  // const TARGET_URL = "http://localhost:3000/"; // local testing
   try {
     // Attempt Fetch
-    const req = await fetch(`http://localhost:3000/get-history?number=${num}`);
+    const req = await fetch(`${TARGET_URL}get-history?number=${num}`);
 
     if (!req.ok) {
       throw new Error(`Server returned status: ${req.status}`);
