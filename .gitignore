@@ -8,4 +8,5 @@ node_modules/
 npm-debug.log
 
 # Environment variables (Safety)
+.env.local
 .env

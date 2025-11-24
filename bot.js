@@ -2,13 +2,21 @@
 const { File } = require("node:buffer");
 global.File = File;
 
+// 1. Load Environment Variables
+require("dotenv").config({ path: ".env.local" });
+
 const TelegramBot = require("node-telegram-bot-api");
 const axios = require("axios");
 const cheerio = require("cheerio");
-const express = require("express"); // Needed to keep the server alive
+const express = require("express");
 
-// --- 1. CONFIGURATION ---
-const token = "8489059716:AAFvaUZVuPYxEnzlOwdX4E9kBg2hSL3tE8E"; // Your Token
+// 2. USE THE VARIABLE (with a fallback for safety)
+const token = process.env.TELEGRAM_TOKEN;
+
+if (!token) {
+  console.error("❌ Error: TELEGRAM_TOKEN is missing in .env.local");
+  process.exit(1);
+}
 const TARGET_URL = "https://customer.nesco.gov.bd/pre/panel";
 
 // --- 2. DUMMY SERVER (To keep Render happy) ---
