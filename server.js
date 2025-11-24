@@ -116,6 +116,8 @@ app.get("/get-history", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Backend Server running on http://localhost:3000");
+// 🟢 UPDATED: Use Render's Dynamic Port or fallback to 3000
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Backend Server running on port ${PORT}`);
 });
