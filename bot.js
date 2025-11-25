@@ -12,7 +12,7 @@ const cron = require("node-cron"); // Import the cron library
 
 // --- CONFIGURATION ---
 // ⭐ REPLACE WITH YOUR ACTUAL RENDER URL ⭐
-const RENDER_URL = "https://your-app-name.onrender.com";
+const RENDER_URL = "https://nesco-bot-8waf.onrender.com";
 
 const token = process.env.TELEGRAM_TOKEN;
 if (!token) {
