@@ -2,24 +2,27 @@
 const { File } = require("node:buffer");
 global.File = File;
 
-// 1. Load Environment Variables
 require("dotenv").config({ path: ".env.local" });
 
 const TelegramBot = require("node-telegram-bot-api");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const express = require("express");
+const cron = require("node-cron"); // Import the cron library
 
-// 2. USE THE VARIABLE (with a fallback for safety)
+// --- CONFIGURATION ---
+// ⭐ REPLACE WITH YOUR ACTUAL RENDER URL ⭐
+const RENDER_URL = "https://your-app-name.onrender.com";
+
 const token = process.env.TELEGRAM_TOKEN;
-
 if (!token) {
-  console.error("❌ Error: TELEGRAM_TOKEN is missing in .env.local");
+  console.error("❌ Error: TELEGRAM_TOKEN is missing.");
   process.exit(1);
 }
+
 const TARGET_URL = "https://customer.nesco.gov.bd/pre/panel";
 
-// --- 2. DUMMY SERVER (To keep Render happy) ---
+// --- DUMMY SERVER ---
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -31,7 +34,25 @@ app.listen(PORT, () => {
   console.log(`Keep-Alive Server running on port ${PORT}`);
 });
 
-// --- 3. THE BOT LOGIC ---
+// ==========================================
+//  🛑 SELF-PING KEEPER (The Fix) 🛑
+// ==========================================
+// This cron job runs every 5 minutes to keep the bot awake.
+cron.schedule("*/5 * * * *", async () => {
+  try {
+    // Only ping if the RENDER_URL is set and not localhost
+    if (RENDER_URL && !RENDER_URL.includes("localhost")) {
+      console.log(`🔄 Self-pinging ${RENDER_URL} to keep awake...`);
+      await axios.get(RENDER_URL);
+      console.log("✅ Self-ping successful.");
+    }
+  } catch (error) {
+    console.error(`❌ Self-ping failed: ${error.message}`);
+  }
+});
+// ==========================================
+
+// --- THE BOT LOGIC ---
 const bot = new TelegramBot(token, { polling: true });
 console.log("🤖 Telegram Bot Started...");
 
